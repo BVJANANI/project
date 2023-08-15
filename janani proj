@@ -1,0 +1,113 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+
+df= pd.read_csv('C:\\Users\\adity\\OneDrive\\Desktop\\IP Project\\1962_2021.csv')
+print(df)
+
+HELP_TEXT = """
+1 - Bar chart on 'States Participating in Assembly'
+2 - Bar chart on 'Top Party that Happened in India'
+3 - Horizontal Bar chart on 'Assembly Political Parties of India'
+4 - Pie chart on 'Party Types of India'
+q/quit - Quit the programh/help - print this HELP_TEXT
+"""
+
+
+def main():  
+    print(HELP_TEXT)
+    while True:
+        choice = input("Enter Choice:")
+        
+        if choice in ('q','quit'):
+            print("Quitting...")
+            return
+        
+        elif choice in ('h','help'):
+            print(HELP_TEXT)
+            
+        elif choice == "1":
+            df_bar_1()
+            
+        elif choice == "2":
+            df_bar_2()
+            
+        elif choice == "3":
+            df_bar_3()
+            
+        elif choice == "4":
+            df_pie()
+            
+        else:
+            print(
+                f"{choice} is not a valid option. Enter 'h' or 'help' to get all valid options"
+            )
+            
+        print("\n")
+        
+
+    
+def df_bar_1():
+    #All The States that Participate in the Assembly in Political Parties of India
+    party = df['State_Name'].value_counts()
+    #value_counts() method return a Series containing counts of unique values
+    plt.figure(figsize=(120,100))
+    #120 represents the width of the figure
+    #100 represents the height of the figure
+    plt.bar(party.index,party.values,color = ['b','c','g','k','m','r','y'])
+    
+    plt.xlabel('States')
+    plt.ylabel('no.of Parties')
+    
+    plt.title('All The States that Participate in the Assembly in Political Parties of India',weight = 'bold',fontsize=40)
+    plt.show()
+    
+def df_bar_2():
+    #Top Party that Happaned in India
+    party  = df['Frequent_Abbreviation'].value_counts().reset_index().head(10)
+    #value_counts() method return a Series containing counts of unique values
+    #reset_index() method allows you reset the index back to the default 0, 1, 2 etc indexes
+    party.columns=['partyname','counts']
+        
+    plt.figure(figsize=(20,10))
+    #20 represents the width of the figure
+    #10 represents the height of the figure
+    plt.bar(party['partyname'],party['counts'], color = ['b','c','g','k','m','r','y','b','c','g'] )
+    
+    plt.xlabel('Parties')
+    plt.ylabel('Frequency')
+    
+    plt.title('Top Party Happened in India',fontsize=20)
+    plt.show()
+    
+def df_bar_3():
+    
+    #Assembly Political Parties of India
+    party = df['Assembly'].value_counts()
+    #value_counts() method return a Series containing counts of unique values
+    plt.figure(figsize=(7,7))
+    #7 represents the width of the figure
+    #7 represents the height of the figure
+    plt.barh(party.index,party.values,color = ['b','c'])
+    
+    plt.xlabel('no.of Parties')
+    plt.ylabel('Assembly')
+
+    plt.title('Assembly Political Parties of India',weight = 'bold', fontsize=10)
+    plt.show()
+    
+def df_pie():
+    # pie chart Party_Type of India
+    party=df['Party_Type'].value_counts()
+    #value_counts() method return a Series containing counts of unique values
+    plt.figure(figsize=(12,7))
+    #12 represents the width of the figure
+    #7 represents the height of the figure
+    
+    plt.pie(party.values, labels = party.index, autopct=("%1.0f%%"))
+    #autopct is used to display the % value
+    
+    plt.title('Party_Type of India',fontsize=20)
+    plt.show()
+    
+    
+main()
